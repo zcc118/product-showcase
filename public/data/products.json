@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "products": [
+    {
+      "id": "A001",
+      "name": "日常帆布托特包",
+      "category": "随行包袋",
+      "price": 129,
+      "currency": "CNY",
+      "description": "装下书本、电脑和随行小物，宽肩带让出门更轻松。",
+      "images": [
+        "assets/images/A001/01.svg",
+        "assets/images/A001/02.svg",
+        "assets/images/A001/03.svg"
+      ],
+      "status": "上架",
+      "sort": 10,
+      "tag": "本周精选",
+      "specs": {
+        "材质": "棉帆布",
+        "规格": "38 × 32 × 12 cm"
+      }
+    },
+    {
+      "id": "A002",
+      "name": "轻量斜挎小包",
+      "category": "随行包袋",
+      "price": 89,
+      "currency": "CNY",
+      "description": "轻便的小尺寸，刚好收纳手机、钥匙与日常随身物。",
+      "images": [
+        "assets/images/A002/01.svg",
+        "assets/images/A002/02.svg",
+        "assets/images/A002/03.svg"
+      ],
+      "status": "上架",
+      "sort": 20,
+      "tag": "轻装出行",
+      "specs": {
+        "材质": "再生尼龙",
+        "规格": "22 × 16 × 7 cm"
+      }
+    },
+    {
+      "id": "C001",
+      "name": "磨砂陶瓷马克杯",
+      "category": "杯壶器皿",
+      "price": 68,
+      "currency": "CNY",
+      "description": "温润的手感，配上喜欢的咖啡，开启不匆忙的早晨。",
+      "images": [
+        "assets/images/C001/01.svg",
+        "assets/images/C001/02.svg",
+        "assets/images/C001/03.svg"
+      ],
+      "status": "上架",
+      "sort": 30,
+      "tag": "人气选物",
+      "specs": {
+        "材质": "陶瓷",
+        "规格": "350 mL"
+      }
+    },
+    {
+      "id": "C002",
+      "name": "耐热玻璃分享壶",
+      "category": "杯壶器皿",
+      "price": 119,
+      "currency": "CNY",
+      "description": "通透壶身与利落出水口，适合两个人的午后茶时光。",
+      "images": [
+        "assets/images/C002/01.svg",
+        "assets/images/C002/02.svg",
+        "assets/images/C002/03.svg"
+      ],
+      "status": "上架",
+      "sort": 40,
+      "tag": "",
+      "specs": {
+        "材质": "高硼硅玻璃",
+        "规格": "600 mL"
+      }
+    },
+    {
+      "id": "H001",
+      "name": "棉麻方形抱枕",
+      "category": "家居日用",
+      "price": 99,
+      "currency": "CNY",
+      "description": "细腻织纹与柔软内芯，给沙发留一个舒服的位置。",
+      "images": [
+        "assets/images/H001/01.svg",
+        "assets/images/H001/02.svg",
+        "assets/images/H001/03.svg"
+      ],
+      "status": "上架",
+      "sort": 50,
+      "tag": "居家灵感",
+      "specs": {
+        "材质": "棉麻混纺",
+        "规格": "45 × 45 cm"
+      }
+    },
+    {
+      "id": "H002",
+      "name": "桌面收纳托盘",
+      "category": "家居日用",
+      "price": 59,
+      "currency": "CNY",
+      "description": "为钥匙、首饰与零碎小物，留下一处整齐的归宿。",
+      "images": [
+        "assets/images/H002/01.svg",
+        "assets/images/H002/02.svg",
+        "assets/images/H002/03.svg"
+      ],
+      "status": "上架",
+      "sort": 60,
+      "tag": "",
+      "specs": {
+        "材质": "榉木",
+        "规格": "24 × 15 cm"
+      }
+    },
+    {
+      "id": "P001",
+      "name": "横线随行笔记本",
+      "category": "纸品文具",
+      "price": 39,
+      "currency": "CNY",
+      "description": "把临时想到的灵感写下来，纸页平整，书写顺滑。",
+      "images": [
+        "assets/images/P001/01.svg",
+        "assets/images/P001/02.svg",
+        "assets/images/P001/03.svg"
+      ],
+      "status": "上架",
+      "sort": 70,
+      "tag": "记录日常",
+      "specs": {
+        "材质": "100g 书写纸",
+        "规格": "A5 · 96 页"
+      }
+    },
+    {
+      "id": "P002",
+      "name": "金属按动中性笔",
+      "category": "纸品文具",
+      "price": 29,
+      "currency": "CNY",
+      "description": "简洁的金属笔身，配合顺畅笔尖，陪伴每一次记录。",
+      "images": [
+        "assets/images/P002/01.svg",
+        "assets/images/P002/02.svg",
+        "assets/images/P002/03.svg"
+      ],
+      "status": "上架",
+      "sort": 80,
+      "tag": "",
+      "specs": {
+        "材质": "铝合金",
+        "规格": "0.5 mm · 黑墨"
+      }
+    }
+  ]
+}

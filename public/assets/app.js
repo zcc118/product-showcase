@@ -1,0 +1,30 @@
+'use strict';
+const $ = s => document.querySelector(s);
+let products = [], category = '全部', current = null, imageIndex = 0, site = {};
+const money = n => new Intl.NumberFormat('zh-CN', {maximumFractionDigits:2}).format(n);
+function el(tag, className, text) { const node = document.createElement(tag); if(className) node.className = className; if(text !== undefined) node.textContent = text; return node; }
+function image(src, alt) { const img = el('img'); img.src = src; img.alt = alt; img.loading = 'lazy'; img.addEventListener('error', () => { if(!img.dataset.failed){img.dataset.failed='1';img.src='assets/images/fallback.svg';} }); return img; }
+function render() {
+ const query = $('#search').value.trim().toLocaleLowerCase();
+ const list = products.filter(p => (category === '全部' || p.category === category) && `${p.id} ${p.name} ${p.category} ${p.description}`.toLocaleLowerCase().includes(query));
+ $('#grid').replaceChildren(); $('#count').textContent = `共 ${list.length} 件选物`; $('#total').textContent = String(products.length).padStart(2,'0');
+ for(const p of list) {
+  const card=el('button','card');card.type='button';card.setAttribute('aria-label',`查看 ${p.name}，${p.price} 元`);
+  const visual=el('div','card-image');visual.append(image(p.images[0],`${p.name} — 主图`));if(p.tag) visual.append(el('span','tag',p.tag));
+  const meta=el('div','card-meta');meta.append(el('span','',p.category),el('span','',p.id));
+  const title=el('div','card-title-row');const price=el('span','price');price.append(el('small','','¥'),document.createTextNode(money(p.price)));title.append(el('h3','',p.name),price);
+  card.append(visual,meta,title,el('p','',p.description));card.addEventListener('click',()=>openDetail(p));$('#grid').append(card);
+ }
+ $('#state').hidden=Boolean(list.length);if(!list.length){$('#state').replaceChildren(el('p','','没有找到匹配的商品，试试其他关键词。'));const reset=el('button','outline','清除筛选');reset.onclick=()=>{$('#search').value='';category='全部';renderCategories();render();};$('#state').append(reset);}
+}
+function renderCategories(){ $('#categories').replaceChildren(); for(const name of ['全部',...new Set(products.map(p=>p.category))]){const b=el('button','',name);b.setAttribute('aria-pressed',String(name===category));b.onclick=()=>{category=name;renderCategories();render();};$('#categories').append(b);} }
+function showImage(index){imageIndex=(index+current.images.length)%current.images.length;const img=$('#detail-image');img.removeAttribute('data-failed');img.src=current.images[imageIndex];img.alt=`${current.name}，第 ${imageIndex+1} 张图片`;$('#image-count').textContent=`${imageIndex+1} / ${current.images.length}`;[...$('#thumbs').children].forEach((b,i)=>b.setAttribute('aria-pressed',String(i===imageIndex)));$('#prev').hidden=$('#next').hidden=current.images.length<2;}
+function openDetail(p){current=p;$('#detail-title').textContent=p.name;$('#detail-meta').textContent=`${p.category} / ${p.id}`;$('#detail-price').textContent=`¥ ${money(p.price)}`;$('#detail-desc').textContent=p.description;$('#detail-specs').replaceChildren();for(const [k,v] of Object.entries(p.specs||{}))$('#detail-specs').append(el('dt','',k),el('dd','',v));$('#thumbs').replaceChildren();p.images.forEach((src,i)=>{const b=el('button');b.setAttribute('aria-label',`查看第 ${i+1} 张图片`);b.append(image(src,`${p.name} 缩略图 ${i+1}`));b.onclick=()=>showImage(i);$('#thumbs').append(b);});showImage(0);$('#detail').showModal();}
+function openContact(p){$('#inquiry').value=p?`你好，我想了解 ${p.name}（商品编号 ${p.id}），请问有哪些颜色和现货？`:'你好，我想了解店里的商品，请问方便咨询吗？';$('#copy-status').textContent='';$('#contact-note').textContent=site.contact.demo?'当前为演示联系方式，尚未配置真实店主信息。你可以体验复制咨询内容。':(site.contact.note||'复制咨询内容，通过以下方式联系店主。');$('#contact-methods').replaceChildren();if(site.contact.wechat)$('#contact-methods').append(el('p','',`微信：${site.contact.wechat}${site.contact.demo?'（示例）':''}`));if(site.contact.email){const a=el('a','',site.contact.email);a.href=`mailto:${encodeURIComponent(site.contact.email)}?subject=${encodeURIComponent('商品咨询')}&body=${encodeURIComponent($('#inquiry').value)}`;$('#contact-methods').append(a);}$('#contact').showModal();}
+for(const dialog of document.querySelectorAll('dialog')){dialog.querySelector('.close').onclick=()=>dialog.close();dialog.addEventListener('click',e=>{const r=dialog.getBoundingClientRect();if(e.target===dialog&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom))dialog.close();});}
+$('#prev').onclick=()=>showImage(imageIndex-1);$('#next').onclick=()=>showImage(imageIndex+1);$('#detail').addEventListener('keydown',e=>{if($('#contact').open)return;if(e.key==='ArrowLeft'){e.preventDefault();showImage(imageIndex-1);}if(e.key==='ArrowRight'){e.preventDefault();showImage(imageIndex+1);}});
+$('#detail-image').onerror=()=>{const img=$('#detail-image');if(!img.dataset.failed){img.dataset.failed='1';img.src='assets/images/fallback.svg';}};
+$('#inquire').onclick=()=>openContact(current);document.querySelectorAll('.contact-trigger').forEach(b=>b.onclick=()=>openContact(null));$('#search').addEventListener('input',render);
+$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText($('#inquiry').value);$('#copy-status').textContent='已复制，可以粘贴发送给店主。';}catch{$('#inquiry').focus();$('#inquiry').select();$('#copy-status').textContent='请长按或按 Ctrl/Cmd + C 复制已选中的内容。';}};
+async function load(){try{const responses=await Promise.all(['data/products.json','data/site.json'].map(url=>fetch(url)));if(responses.some(r=>!r.ok))throw new Error('数据文件读取失败');const [data,config]=await Promise.all(responses.map(r=>r.json()));if(!Array.isArray(data.products)||!config.contact)throw new Error('数据格式错误');products=data.products.filter(p=>p.status==='上架').sort((a,b)=>a.sort-b.sort);site=config;renderCategories();render();}catch(error){site={contact:{demo:true,wechat:''}};$('#state').hidden=false;$('#state').replaceChildren(el('p','','商品暂时无法加载。请通过本地预览服务打开，并检查 data 目录中的 JSON 文件。'));const retry=el('button','outline','重新加载');retry.onclick=load;$('#state').append(retry);console.error(error);}}
+load();
